@@ -1,7 +1,7 @@
 import string
 import json
 
-finFile = 'bbc.json'
+finFile = 'bbc_filterCategory.json'
 foutFile = 'bbc_removeNonPrintable.json'
 
 with open(finFile) as fin:
@@ -21,7 +21,7 @@ def removeNonPrintable(s):
 for data in datas:
   data['title'] = removeNonPrintable(data['title'])
   data['content'] = removeNonPrintable(data['content'])
-  
+
 with open(foutFile, 'w') as fout:
   json.dump(datas, fout, separators = (', \n', ': '))
   
