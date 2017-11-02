@@ -13,7 +13,7 @@ class NaiveBayes:
         self.class_count          = 0
         # number of documents in each classes
         self.class_document_count = defaultdict(lambda: 0)
-        # number of each words in each classes [category][word]
+        # number of each words in each classes [word][category]
         self.word_class_count     = defaultdict(lambda: defaultdict(lambda: 0))
         # total number of each words
         self.word_count           = defaultdict(lambda: 0)
@@ -39,7 +39,7 @@ class NaiveBayes:
             #
             d = documents[i]
             for w in d:
-                self.word_class_count[c][w] += 1
+                self.word_class_count[w][c] += 1
                 self.word_count[w] += 1 
             #
             # Print Progress
@@ -48,22 +48,20 @@ class NaiveBayes:
             #
         self.calc_word_score()
     def calc_word_score(self):
-        for c in self.word_class_count:
-            print("Calculating word score for:", c)
-            word_count = self.word_class_count[c]
-            denominator = sum(word_count.values()) + len(word_count)
-            for w in word_count:
-                numerator = word_count[w] + 1
-                self.word_score[c][w] = numerator / denominator
+        for w in self.word_class_count:
+            class_count = self.word_class_count[w]
+            denominator = sum(class_count.values()) + len(class_count)
+            for c in class_count:
+                numerator = class_count[c] + 1
+                self.word_score[w][c] = numerator / denominator
     def predict(self, content):
         d = self.document_preprocess(content)
         pcd = {}
         for c in self.class_set:
             pc = log(self.class_document_count[c] / self.document_count)
-            sum_ptc = sum([log(self.word_score[c][w]) for w in content])
+            sum_ptc = sum([log(self.word_score[w][c]) for w in content])
             pcd[c] = pc + sum_ptc
-        return pcd
-        #return max(pcd, key=pcd.get)
+        return (max(pcd, key=pcd.get), pcd)
     def document_preprocess(self, content):
         tokenized_content = self.tokenizer.tokenize(content)
         stemmed_content   = [self.stemmer.stem(w) for w in tokenized_content]
