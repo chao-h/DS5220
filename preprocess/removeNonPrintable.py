@@ -1,8 +1,8 @@
 import string
 import json
 
-finFile = 'bbc_filterCategory.json'
-foutFile = 'bbc_removeNonPrintable.json'
+finFile = '../datas/bbc_filterCategory.json'
+foutFile = '../datas/bbc_removeNonPrintable.json'
 
 with open(finFile) as fin:
   datas = json.load(fin)

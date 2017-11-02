@@ -3,10 +3,10 @@ from nltk.stem.porter import *
 #from nltk.tokenize import TweetTokenizer
 from nltk.tokenize import RegexpTokenizer
 
-finFile = 'bbc_removeNonPrintable.json'
-foutFile = 'bbc_stemmed.json'
+finFile = '../datas/bbc_removeNonPrintable.json'
+foutFile = '../datas/bbc_stemmed.json'
 
-with open('bbc_removeNonPrintable.json') as f:
+with open(finFile) as f:
     datas=json.load(f)
 
 stemmer = PorterStemmer()
