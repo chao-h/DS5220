@@ -2,7 +2,8 @@ files = [
     "filterCategory.py",
     "removeNonPrintable.py",
     "stem.py",
-    "removeStopwords.py"
+    "removeStopwords.py",
+    "sortTimeSeries.py"
 ]
 
 for file_name in files:
