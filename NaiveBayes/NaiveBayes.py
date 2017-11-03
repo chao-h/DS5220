@@ -62,8 +62,8 @@ class NaiveBayes:
                 self.class_word_set[c].add(w)
             #
             # Print Progress
-            if i%1000 == 0:
-                print("Trained from", i, "documents out of", len(datas))
+            if (i+1)%1000 == 0 or i==N-1:
+                print("Trained from", i+1, "documents out of", N)
             #
         # calculate word score: p(w|c)
         self.calc_word_score()

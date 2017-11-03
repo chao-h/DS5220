@@ -4,18 +4,6 @@ import numpy
 with open('../datas/bbc_preprocessed.json') as fin:
     datas = json.load(fin)
 
-from datetime import datetime
-for data in datas:
-    data['date'] = datetime.strptime(data['date'], '%d %B %Y')
-
-numpy.random.seed(123)
-numpy.random.shuffle(datas)
-datas.sort(key = lambda data: data['date'])
-
-
-datas_train = datas[:len(datas)//100]
-datas_valid = datas[len(datas)//100:]
-
 def use_nb(datas_train, datas_valid):
     nb = NaiveBayes()
     nb.train(datas_train)
@@ -45,14 +33,14 @@ plen = len(datas)//partition
 datas_train = datas[:plen]
 datas_valid = datas[plen:plen*2]
 
-res1 = use_nb(datas_train, datas[plen:])
+res1 = use_nb(datas[:plen], datas[plen:])
 
 def use_nb2(datas_train, datas_valid):
     nb = NaiveBayes()
     predicts_all = []
     correct_all = 0
     #
-    for cur_part in range(1,partition):
+    for cur_part in range(1,partition+1):
         nb.train(datas_train)
         predicts = [nb.predict(data['content'])[0] for data in datas_valid]
         predicts_all += predicts
@@ -62,9 +50,10 @@ def use_nb2(datas_train, datas_valid):
                 correct += 1
         correct_all += correct
         print("Correct: ", correct, "out of ", len(datas_valid))
+        print(datas_valid[-1]['date'])
         #
-        datas_train = datas[plen*cur_part:plen*(cur_part+1)]
-        datas_valid = datas[plen*(cur_part+1):min(plen*(cur_part+2), len(datas))]
+        datas_train = datas[min(len(datas), plen*cur_part) : min(len(datas), plen*(cur_part+1))]
+        datas_valid = datas[min(len(datas), plen*(cur_part+1)) : min(len(datas), plen*(cur_part+2))]
         #
         for i in range(len(datas_train)):
             datas_train[i]['category'] = predicts[i]
