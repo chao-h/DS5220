@@ -9,7 +9,7 @@ for file_name in files:
     print("Executing:", file_name)
     exec(open(file_name).read())
 
-foutFile = '../datas/bbc_preproceseed.json'
+foutFile = '../datas/bbc_preprocessed.json'
 
 with open(foutFile, 'w') as fout:
     json.dump(datas, fout, separators = (', \n', ': '))

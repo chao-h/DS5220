@@ -63,7 +63,7 @@ class NaiveBayes:
             #
             # Print Progress
             if i%1000 == 0:
-                print("Trained from", i, "documents")
+                print("Trained from", i, "documents out of", len(datas))
             #
         # calculate word score: p(w|c)
         self.calc_word_score()
@@ -128,10 +128,40 @@ class NaiveBayes:
 '''
 Below is a sample of how to use this NaiveBayes
 '''
-nb = NaiveBayes()
+
 import json
-with open('datas/bbc_preproceseed.json') as fin:
+import numpy
+with open('datas/bbc_preprocessed.json') as fin:
     datas = json.load(fin)
+    numpy.random.shuffle(datas)
+
+datas_train = datas[:len(datas)//2]
+datas_valid = datas[len(datas)//2:]
+
+def use_nb(datas_train, datas_valid):
+    nb = NaiveBayes()
+    nb.train(datas_train)
+
+    predicts = []
+    for i in range(len(datas_valid)):
+        if (i%1000) == 0:
+            print("Getting prediction of", i, "documents out of", len(datas_valid))
+        predicts.append(nb.predict(datas_valid[i]['content']))
+
+    pp = [p[0] for p in predicts]
+
+    correct = 0
+    for i in range(len(predicts)):
+        if predicts[i][0] == datas_valid[i]['category']:
+            correct += 1
+
+    print("Correct: ", correct, "out of", len(datas_valid)) 
+    
+
+use_nb(datas_train, datas_valid)
+#use_nb(datas, datas)
+
+'''
 nb.train(datas)
 nb.predict_after_preprocess('apple and microsoft')
 nb.predict(['ceremoni'])
@@ -150,4 +180,4 @@ for i in range(len(predicts)):
         correct += 1
 
 correct
-
+'''
