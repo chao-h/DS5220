@@ -128,10 +128,10 @@ class NaiveBayes:
 '''
 Below is a sample of how to use this NaiveBayes
 '''
-
+'''
 import json
 import numpy
-with open('datas/bbc_preprocessed.json') as fin:
+with open('../datas/bbc_preprocessed.json') as fin:
     datas = json.load(fin)
     numpy.random.shuffle(datas)
 
@@ -160,7 +160,7 @@ def use_nb(datas_train, datas_valid):
 
 use_nb(datas_train, datas_valid)
 #use_nb(datas, datas)
-
+'''
 '''
 nb.train(datas)
 nb.predict_after_preprocess('apple and microsoft')
