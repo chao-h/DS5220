@@ -22,7 +22,7 @@ class TFIDF:
     #
     #Normalized term frequency
     def tf(self, article):
-        max_count = max([self.term_freq(t, article) for t in article])
+        max_count = max([self.term_freq(t, article) for t in article.split(" ")])
         return (0.5+ (0.5 * self.term_freq(self.word, article)/max_count))
     #            
     #number of articles that contain the word   
