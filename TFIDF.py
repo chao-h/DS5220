@@ -5,8 +5,12 @@ Created on Sun Nov 12 13:58:52 2017
 
 @author: ray
 """
+from collections import Counter
+import math
+import pandas as pd
+import numpy as np
 
-def tfidf(articles):
+def tfidf(articles, use_pandas=False):
     
     length = len(articles)
     
@@ -22,11 +26,12 @@ def tfidf(articles):
             
     for x in articles: 
         dic = {}
+            
+        count =  Counter(x)
+        
+        max_count = max(count.values())
+        
         for word in set(x):
-            
-            count =  Counter(x)
-            
-            max_count = max(count.values())
             
             num = Word[word]
             
@@ -37,8 +42,12 @@ def tfidf(articles):
             dic[word] = idf*tf
             
         bigdata.append(dic)
-        
-    Data = pd.DataFrame(data=bigdata)
-    Data = pd.DataFrame.as_matrix(Data.fillna(0))
-    Data = np.matrix(Data)
-    return Data
+
+    if use_pandas:
+        Data = pd.DataFrame(data=bigdata)
+        Data = pd.DataFrame.as_matrix(Data.fillna(0))
+        Data = np.matrix(Data)
+        return Data
+    else: 
+        return bigdata
+
